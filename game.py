@@ -98,6 +98,8 @@ while loop:
 	labela = myfont.render("game over", 1, text_color)
 	screen.blit(labela, (150, HIGHT/2))
 	pygame.display.update()
+	score = 0
+	speed = 10
 	while prohra:
 		for event in pygame.event.get():
 			if event.type == pygame.KEYDOWN:
