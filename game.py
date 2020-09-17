@@ -97,6 +97,9 @@ while loop:
 	screen.fill(pozadi)
 	labela = myfont.render("game over", 1, text_color)
 	screen.blit(labela, (150, HIGHT/2))
+	text = "score: " + str(score)
+	label = myfont.render(text, 1, text_color)
+	screen.blit(label, (WIDTH - 390, HIGHT -40))
 	pygame.display.update()
 	score = 0
 	speed = 10
