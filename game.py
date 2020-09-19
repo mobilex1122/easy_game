@@ -4,8 +4,9 @@ import random
 
 
 pygame.init()
-
-
+rscore = open("score.txt", "r")
+wscore = open("score.txt", "w")
+bscore = 0	
 # setings
 WIDTH = 400
 HIGHT = 1000
@@ -80,6 +81,9 @@ while loop:
 		texta = "speed: " + str(speed)
 		labelc = myfont.render(texta, 1, text_color)
 		screen.blit(labelc, (WIDTH - 200, HIGHT -40))
+		bscore = rscore.read()
+		wscore.write(str(score))
+
 
 		pygame.draw.rect(screen, enemy_color, (enemy_pos[0], enemy_pos[1], enemy_size, enemy_size))
 		pygame.draw.rect(screen, player_color, (player_pos[0], player_pos[1], player_size,player_size))
@@ -100,7 +104,11 @@ while loop:
 	text = "score: " + str(score)
 	label = myfont.render(text, 1, text_color)
 	screen.blit(label, (WIDTH - 390, HIGHT -40))
+	texta = "best: " + str(bscore)
+	labelc = myfont.render(texta, 1, text_color)
+	screen.blit(labelc, (WIDTH - 200, HIGHT -40))
 	pygame.display.update()
+	
 	score = 0
 	speed = 10
 	while prohra:
