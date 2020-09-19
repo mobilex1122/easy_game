@@ -1,12 +1,12 @@
 import pygame
 import sys
 import random
-
+import shelve
 
 pygame.init()
-rscore = open("score.txt", "r")
-wscore = open("score.txt", "w")
-bscore = 0	
+rscore = shelve.open('score.txt')  # here you will save the score variable   
+bscore = rscore['score']          # thats all, now it is saved on disk.
+	
 # setings
 WIDTH = 400
 HIGHT = 1000
@@ -48,6 +48,9 @@ while loop:
 		for event in pygame.event.get():
 			
 			if event.type == pygame.QUIT:
+				if score > bscore:
+					rscore['score'] = score
+				d.close()
 				sys.exit()
 			if event.type == pygame.KEYDOWN:
 				x = player_pos[0]
@@ -81,8 +84,8 @@ while loop:
 		texta = "speed: " + str(speed)
 		labelc = myfont.render(texta, 1, text_color)
 		screen.blit(labelc, (WIDTH - 200, HIGHT -40))
-		bscore = rscore.read()
-		wscore.write(str(score))
+		if score > bscore:
+			rscore['score'] = score
 
 
 		pygame.draw.rect(screen, enemy_color, (enemy_pos[0], enemy_pos[1], enemy_size, enemy_size))
@@ -122,4 +125,7 @@ while loop:
 				if event.key == pygame.K_SPACE:
 					prohra = False
 			if event.type == pygame.QUIT:
+				if score > bscore:
+					rscore['score'] = score
+				d.close()
 				sys.exit()
