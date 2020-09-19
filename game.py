@@ -3,6 +3,7 @@ import sys
 import random
 
 pygame.init()
+pygame.mixer.init()
 # setings
 WIDTH = 400
 HIGHT = 1000
@@ -24,7 +25,7 @@ score = 0
 bscore = 0
 screen = pygame.display.set_mode((WIDTH, HIGHT))
 loop = True
-
+pygame.mixer.Sound.play(pygame.mixer.Sound('music.wav'))
 prohra = True
 clock = pygame.time.Clock()
 def getscore():
