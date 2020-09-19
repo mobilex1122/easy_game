@@ -1,12 +1,8 @@
 import pygame
 import sys
 import random
-import shelve
 
 pygame.init()
-rscore = shelve.open('score.txt')  # here you will save the score variable   
-bscore = rscore['score']          # thats all, now it is saved on disk.
-	
 # setings
 WIDTH = 400
 HIGHT = 1000
@@ -25,11 +21,36 @@ player_pos = [WIDTH/2, HIGHT-player_size-40]
 enemy_pos = [random.choice(a), 0]
 myfont = pygame.font.SysFont("moonspace", 35)
 score = 0
+bscore = 0
 screen = pygame.display.set_mode((WIDTH, HIGHT))
 loop = True
 
 prohra = True
 clock = pygame.time.Clock()
+def getscore():
+	score = 0
+	try:
+		rscore = open("score.txt", "r")
+		score = int(rscore.read())
+		rscore.close()
+		print("score read ok")
+	except IOError:
+		print("no bscore")
+	except ValueError:
+		print("error")
+	return score
+
+def savescore(newbscore):
+	try:
+		wscore = open("score.txt", "w")
+		wscore.write(str(newbscore))
+		wscore.close()
+	except IOError:
+		print("write error")
+
+bscore = getscore()
+
+
 
 def detect_collision(player_pos, enemy_pos):
 	p_x = player_pos[0]
@@ -49,8 +70,10 @@ while loop:
 			
 			if event.type == pygame.QUIT:
 				if score > bscore:
-					rscore['score'] = score
-				d.close()
+					savescore(score)
+					print("new bscore")
+
+				
 				sys.exit()
 			if event.type == pygame.KEYDOWN:
 				x = player_pos[0]
@@ -84,8 +107,6 @@ while loop:
 		texta = "speed: " + str(speed)
 		labelc = myfont.render(texta, 1, text_color)
 		screen.blit(labelc, (WIDTH - 200, HIGHT -40))
-		if score > bscore:
-			rscore['score'] = score
 
 
 		pygame.draw.rect(screen, enemy_color, (enemy_pos[0], enemy_pos[1], enemy_size, enemy_size))
@@ -111,6 +132,10 @@ while loop:
 	labelc = myfont.render(texta, 1, text_color)
 	screen.blit(labelc, (WIDTH - 200, HIGHT -40))
 	pygame.display.update()
+	if score > bscore:
+		savescore(score)
+		bscore = score
+		print("new bscore")
 	
 	score = 0
 	speed = 10
@@ -125,7 +150,4 @@ while loop:
 				if event.key == pygame.K_SPACE:
 					prohra = False
 			if event.type == pygame.QUIT:
-				if score > bscore:
-					rscore['score'] = score
-				d.close()
 				sys.exit()
