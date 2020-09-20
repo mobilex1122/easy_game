@@ -1,9 +1,7 @@
 # easy_game
- need for run:
- pip install pygame
+instalation:
 
- controls:
- left
- right
+1) install python here​
+2)install pygame
 
- if you lose press space to continue
+open instalation folder and run setup.bat
