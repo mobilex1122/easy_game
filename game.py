@@ -4,6 +4,7 @@ import random
 
 pygame.init()
 pygame.mixer.init()
+
 # setings
 WIDTH = 400
 HIGHT = 1000
@@ -17,15 +18,21 @@ text_color = (255, 255, 0)
 
 
 # setup
+
 a = [0, 100, 200, 300]
 player_pos = [WIDTH/2, HIGHT-player_size-40]
 enemy_pos = [random.choice(a), 0]
 myfont = pygame.font.SysFont("moonspace", 35)
+myfonta = pygame.font.SysFont("moonspace", 40)
 score = 0
 bscore = 0
 screen = pygame.display.set_mode((WIDTH, HIGHT))
 loop = True
-pygame.mixer.Sound.play(pygame.mixer.Sound('music.wav'))
+WSI = pygame.mixer.music.load('music.ogg')
+pygame.mixer.music.play(-1)
+gameIcon = pygame.image.load("icon.png")
+pygame.display.set_icon(gameIcon)
+pygame.display.set_caption("easy game")
 prohra = True
 clock = pygame.time.Clock()
 def getscore():
@@ -65,6 +72,34 @@ def detect_collision(player_pos, enemy_pos):
 keys=pygame.key.get_pressed()
 #game
 while loop:
+	text = "score: " + str(score)
+	label = myfont.render(text, 1, text_color)
+	screen.blit(label, (WIDTH - 390, HIGHT -40))
+	texta = "best: " + str(bscore)
+	labelc = myfont.render(texta, 1, text_color)
+	screen.blit(labelc, (WIDTH - 200, HIGHT -40))
+	labela = myfonta.render("easy game!", 1, text_color)
+	screen.blit(labela, (140, HIGHT/2-10))
+	labela = myfont.render("press space", 1, text_color)
+	screen.blit(labela, (142, HIGHT/2+30))
+	pygame.display.update()
+	if score > bscore:
+		savescore(score)
+		bscore = score
+		print("new bscore")
+	
+	score = 0
+	speed = 10
+	while prohra:
+		for event in pygame.event.get():
+			if event.type == pygame.KEYDOWN:
+				if event.key == pygame.K_SPACE:
+					prohra = False
+					pygame.mixer.music.stop()
+					WSA = pygame.mixer.music.load('music2.ogg')
+					pygame.mixer.music.play(-1)
+			if event.type == pygame.QUIT:
+				sys.exit()
 	while not prohra:
 
 		for event in pygame.event.get():
@@ -124,31 +159,35 @@ while loop:
 
 	
 	screen.fill(pozadi)
-	labela = myfont.render("game over", 1, text_color)
-	screen.blit(labela, (150, HIGHT/2))
+	labela = myfont.render("game over", 2, text_color)
+	screen.blit(labela, (149, HIGHT/2))
 	text = "score: " + str(score)
 	label = myfont.render(text, 1, text_color)
 	screen.blit(label, (WIDTH - 390, HIGHT -40))
 	texta = "best: " + str(bscore)
 	labelc = myfont.render(texta, 1, text_color)
 	screen.blit(labelc, (WIDTH - 200, HIGHT -40))
-	pygame.display.update()
+	labela = myfont.render("press space", 1, text_color)
+	screen.blit(labela, (142, HIGHT/2+30))
+	
 	if score > bscore:
 		savescore(score)
 		bscore = score
-		print("new bscore")
-	
+		labela = myfonta.render("new best score!", 1, text_color)
+		screen.blit(labela, (125, HIGHT/2-40))
+	pygame.display.update()
 	score = 0
 	speed = 10
+	pygame.mixer.music.stop()
+	WSI = pygame.mixer.music.load('music.ogg')
+	pygame.mixer.music.play(-1)
 	while prohra:
 		for event in pygame.event.get():
 			if event.type == pygame.KEYDOWN:
-				if event.key == pygame.K_LEFT:
-					prohra = False
-
-				elif event.key == pygame.K_RIGHT:
-					prohra = False
 				if event.key == pygame.K_SPACE:
 					prohra = False
+					pygame.mixer.music.stop()
+					WSA = pygame.mixer.music.load('music2.ogg')
+					pygame.mixer.music.play(-1)
 			if event.type == pygame.QUIT:
 				sys.exit()
